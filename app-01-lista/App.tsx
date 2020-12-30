@@ -1,33 +1,53 @@
 import React from 'react';
-import { render } from 'react-dom';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import axios from 'axios'
 
 import Header from './src/components/Header'
-import { Lista, Dado } from './src/components/Lista'
+import { Lista } from './src/components/Lista'
+import { Pessoa } from './src/models'
 
-const arrayDados: Array<Dado> = [
-  {
-    id: 0,
-    valor: "Teste 00"
-  },
-  {
-    id: 1,
-    valor: "Teste 01"
-  },
-  {
-    id: 2,
-    valor: "Teste 02"
-  },
-  {
-    id: 3,
-    valor: "Teste 03"
+interface IProps {
+}
+
+interface IState {
+  dados: Array<Pessoa>
+}
+
+export default class App extends React.Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props)
+
+    this.state = {
+      dados: []
+    }
   }
-]
-export default function App() {
-  return (
-    <View>
-      <Header texto="APP 01 LISTA" />
-      <Lista lista={arrayDados} />
-    </View>
-  );
+
+  componentDidMount() {
+    axios
+      .get('https://randomuser.me/api/?nat=br&results=5')
+      .then(response => {
+        const { results } = response.data
+        const lista = results.map((item: any) => {
+          return {
+            idPessoa: item.login.uuid,
+            nome: item.name.first,
+            sobrenome: item.name.last,
+            urlImagemMini: item.picture.thumbnail,
+            urlImagemGrande: item.picture.large
+          }
+        })
+        this.setState({
+          dados: lista
+        })
+      })
+  }
+
+  render() {
+    return (
+      <View>
+        <Header texto="APP 01 LISTA" />
+        <Lista lista={this.state.dados} />
+      </View>
+    );
+  }
 }

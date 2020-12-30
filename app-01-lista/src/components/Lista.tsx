@@ -1,17 +1,22 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { ListaItem } from './ListaItem'
+import { Pessoa } from '../models'
 
-export type Dado = {
-    id: number
-    valor: string
-}
-
-export const Lista = (props: { lista: Array<Dado> }) =>
-    <View>
+export const Lista = (props: { lista: Array<Pessoa> }) =>
+    <View style={styles.lista}>
         {
             props.lista.map(item => {
-                return <Text key={item.id}>{item.valor}</Text>
+                
+                return <ListaItem key={item.idPessoa} dados={item}/>
             })
         }
     </View>
 
+const styles = StyleSheet.create({
+    lista: {
+        backgroundColor: '#FFF',
+        margin: '3%',
+        borderColor: '#000'
+    }
+})
