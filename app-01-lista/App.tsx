@@ -1,53 +1,52 @@
-import React from 'react';
-import { View } from 'react-native';
-import axios from 'axios'
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator, HeaderTitle } from '@react-navigation/stack';
+import { StyleSheet } from 'react-native'
 
-import Header from './src/components/Header'
-import { Lista } from './src/components/Lista'
-import { Pessoa } from './src/models'
+import ListaScreen from './src/screen/ListaScreen'
+import ListaItemDetalheScreen from './src/screen/ListaItemDetalheScreen'
 
-interface IProps {
+import RotaParametroLista from './src/RouterParameters'
+
+const Stack = createStackNavigator<RotaParametroLista>();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={
+        {
+          headerStyle: style.header,
+          headerTitleStyle: style.title
+        }}>
+        <Stack.Screen name="Lista" component={ListaScreen} options={{ title: 'APP 01 LISTA' }} />
+        <Stack.Screen
+          name="ListaItemDetalhe"
+          component={ListaItemDetalheScreen}
+          options={({ navigation, route }) => {
+            const { nome } = route.params.dadosPessoa
+            return (
+              {
+                title: nome,
+                headerTitleStyle: {
+                  fontSize: 20,
+                  fontWeight: 'bold'
+                }
+              })
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
-interface IState {
-  dados: Array<Pessoa>
-}
-
-export default class App extends React.Component<IProps, IState> {
-  constructor(props: IProps) {
-    super(props)
-
-    this.state = {
-      dados: []
-    }
+const style = StyleSheet.create({
+  header: {
+    backgroundColor: '#3a8c2d',
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    flexGrow: 1,
+    textAlign: 'center'
   }
-
-  componentDidMount() {
-    axios
-      .get('https://randomuser.me/api/?nat=br&results=5')
-      .then(response => {
-        const { results } = response.data
-        const lista = results.map((item: any) => {
-          return {
-            idPessoa: item.login.uuid,
-            nome: item.name.first,
-            sobrenome: item.name.last,
-            urlImagemMini: item.picture.thumbnail,
-            urlImagemGrande: item.picture.large
-          }
-        })
-        this.setState({
-          dados: lista
-        })
-      })
-  }
-
-  render() {
-    return (
-      <View>
-        <Header texto="APP 01 LISTA" />
-        <Lista lista={this.state.dados} />
-      </View>
-    );
-  }
-}
+})

@@ -7,8 +7,7 @@ export const Lista = (props: { lista: Array<Pessoa> }) =>
     <View style={styles.lista}>
         {
             props.lista.map(item => {
-                
-                return <ListaItem key={item.idPessoa} dados={item}/>
+                return <ListaItem key={item.idPessoa} dados={item} />
             })
         }
     </View>
