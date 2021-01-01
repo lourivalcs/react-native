@@ -1,9 +1,9 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import axios from 'axios'
 
-import { Lista } from '../components/Lista'
-import { Pessoa } from '../models'
+import { Lista, Erro } from '../components'
+import { IPessoa } from '../interfaces'
 import { NavigationParams, NavigationScreenProp, NavigationState, } from 'react-navigation'
 
 interface IProps {
@@ -11,7 +11,9 @@ interface IProps {
 }
 
 interface IState {
-  dados: Array<Pessoa>
+  dados: Array<IPessoa>
+  loading: boolean
+  error: boolean
 }
 
 export default class ListaScreen extends React.Component<IProps, IState> {
@@ -19,11 +21,14 @@ export default class ListaScreen extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
-      dados: []
+      dados: [],
+      loading: false,
+      error: false
     }
   }
 
   componentDidMount() {
+    this.setState({ loading: true })
     axios
       .get('https://randomuser.me/api/?nat=br&results=50')
       .then(response => {
@@ -42,18 +47,30 @@ export default class ListaScreen extends React.Component<IProps, IState> {
           }
         })
         this.setState({
-          dados: lista
+          dados: lista,
+          loading: false
         })
+      })
+      .catch(error => {
+        this.setState({ loading: false, error: true })
       })
   }
 
   render() {
+    const { dados, loading, error } = this.state
     return (
-      <View>
-        <Lista
-          lista={this.state.dados}
-        />
+      <View style={styles.view} >
+        { loading && <ActivityIndicator size="large" color="#000" />}
+        { (!loading && !error) && <Lista lista={dados} />}
+        { error && <Erro />}
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+    justifyContent: 'center'
+  }
+})
