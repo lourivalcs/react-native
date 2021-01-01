@@ -25,7 +25,7 @@ export default class ListaScreen extends React.Component<IProps, IState> {
 
   componentDidMount() {
     axios
-      .get('https://randomuser.me/api/?nat=br&results=5')
+      .get('https://randomuser.me/api/?nat=br&results=50')
       .then(response => {
         const { results } = response.data
         const lista = results.map((item: any) => {

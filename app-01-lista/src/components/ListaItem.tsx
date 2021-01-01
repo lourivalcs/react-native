@@ -2,11 +2,10 @@ import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native';
 
-import { Pessoa } from '../models'
+import { IPessoa } from '../interfaces'
 import { alteraParaMaiusculo } from '../util'
 
-
-export const ListaItem = (props: { dados: Pessoa }) => {
+export const ListaItem = (props: { dados: IPessoa }) => {
     const navigation = useNavigation();
     const { dados } = props
     const nomeCompleto = alteraParaMaiusculo(`${dados.nome} ${dados.sobrenome}`)

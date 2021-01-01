@@ -1,0 +1,1 @@
+export { IPessoa } from '../interfaces/IPessoa'
