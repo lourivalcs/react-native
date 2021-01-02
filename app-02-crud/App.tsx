@@ -12,7 +12,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Screens.Navigator>
-        <Screens.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: true }} />
+        <Screens.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
       </Screens.Navigator>
     </NavigationContainer>
   );

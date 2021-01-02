@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextInput, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
+import { StyleProp, StyleSheet, TextInput, View, ViewStyle } from 'react-native'
 
 export const Input = (props: { placeHolder?: string, value?: string, password?: boolean, onChangeText: any, style?: StyleProp<ViewStyle> }) => {
     const { onChangeText, password = false, placeHolder, style, value } = props
@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         borderColor: '#000',
         borderWidth: 1,
-        margin: '1%',
         borderRadius: 5,
         fontSize: 20,
         paddingLeft: 5
