@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { ActivityIndicator, StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 
 /**
      * Custom Button with TouchableOpacity
@@ -9,12 +9,22 @@ import { StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from '
      * @param styleTitle => customize title of button
 */
 
-export const Button = (props: { title: string, onPress: any, styleButton?: StyleProp<ViewStyle>, styleTitle?: StyleProp<ViewStyle> }) => {
-    const { title, onPress, styleButton, styleTitle  } = props
+export const Button = (props: { title: string, onPress: any, styleButton?: StyleProp<ViewStyle>, styleTitle?: StyleProp<ViewStyle>, loading?: boolean }) => {
+    const { title, onPress, styleButton, styleTitle, loading = false } = props
 
     return (
-        <TouchableOpacity onPress={onPress} style={[styles.button, styleButton]}>
-            <Text style={[styles.title, styleTitle]}>{title}</Text>
+        <TouchableOpacity
+            onPress={onPress}
+            style={[styles.button, styleButton]}>
+            <Text style={[styles.title, styleTitle]}>
+                {!loading && title}
+            </Text>
+
+            {loading &&
+                <View style={styles.loading}>
+                    <ActivityIndicator color="#000" size="large" />
+                </View>
+            }
         </TouchableOpacity>
     )
 }
@@ -30,5 +40,8 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: 'bold'
+    },
+    loading: {
+        marginTop: -30
     }
 })
